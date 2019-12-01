@@ -1,0 +1,5 @@
+source("scripts/01_load_data.R")
+source("scripts/02_preprocess.R")
+source("scripts/03_feat_selection.R")
+source("scripts/04_train.R")
+source("scripts/05_pred.R")
