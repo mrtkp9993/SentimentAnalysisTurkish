@@ -1,5 +1,6 @@
 sentence <- "bugün hava güzel"
 
+# This part is not tested yet.
 dt_sentence <- DocumentTermMatrix(Corpus(VectorSource(sentence)),
                                   control = list(
                                     stemDocument = TRUE,
