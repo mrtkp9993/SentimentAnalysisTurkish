@@ -1,4 +1,4 @@
-sentence <- "Özlediğim biriyle görüşmek"
+sentence <- "bugün çok üzgünüm"
 
 sentence_tokens <- sentence %>% tolower %>% word_tokenizer
 it_test <- itoken(sentence_tokens)
