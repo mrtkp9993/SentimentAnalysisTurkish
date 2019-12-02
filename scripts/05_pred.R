@@ -1,14 +1,7 @@
-sentence <- "bugün hava güzel"
+sentence <- "Özlediğim biriyle görüşmek"
 
-# This part is not tested yet.
-dt_sentence <- DocumentTermMatrix(Corpus(VectorSource(sentence)),
-                                  control = list(
-                                    stemDocument = TRUE,
-                                    language = "turkish",
-                                    removePunctuation = TRUE,
-                                    removeNumbers = TRUE,
-                                    dictionary = proc_data_dict))
+sentence_tokens <- sentence %>% tolower %>% word_tokenizer
+it_test <- itoken(sentence_tokens)
+dtm_test <- create_dtm(it_test, v_vectorizer)
 
-pred_df <- as.data.table(as.matrix(dt_sentence))
-
-predict(fit, pred_df)
+predict(fit, dtm_test)
