@@ -1,7 +1,11 @@
-sentence <- "Bugün çok üzüldüm"
+sentence <- "Bugün çok güzel bir gün"
 
-sentence_tokens <- sentence %>% tolower %>% word_tokenizer
+sentence_tokens <- sentence %>% 
+  tolower %>% 
+  removeNumbers %>%
+  removePunctuation %>%
+  word_tokenizer
 it_test <- itoken(sentence_tokens)
 dtm_test <- create_dtm(it_test, v_vectorizer)
 
-predict(fit, dtm_test)
+predict(fit, dtm_test, type="response")

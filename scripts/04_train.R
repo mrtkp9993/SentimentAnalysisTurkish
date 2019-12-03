@@ -1,14 +1,16 @@
-library(caret)
+library(glmnet)
+require(doMC)
+registerDoMC(cores = 4)
 
-fitControl <- trainControl(method = "cv",
-                           number = 5,
-                           classProbs = TRUE,
-                           verboseIter = TRUE)
+fit <- cv.glmnet(
+  x = dtm_train,
+  y = dataset$OriginalEmotion,
+  family = 'multinomial',
+  type.measure = "class",
+  nfolds = 5,
+  thresh = 1e-3,
+  maxit = 1e3,
+  parallel = TRUE
+)
 
-fit <- train(x=dtm_train, y=dataset$OriginalEmotion,
-             method = "xgbTree", trControl=fitControl,
-             nthread=4,
-             verbose=TRUE)
-
-trellis.par.set(caretTheme())
-plot(fit)
+save(fit, file = "shinyproject/sent_analysis_tr/fit.rda")
