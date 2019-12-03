@@ -3,9 +3,7 @@ library(shinythemes)
 library(text2vec)
 library(dplyr)
 library(DT)
-library(caret)
-library(xgboost)
-library(text2vec)
+library(glmnet)
 
 load(file = "fit.rda")
 load(file = "v_vectorizer.rda")
@@ -19,7 +17,7 @@ ui <- fluidPage(
             textInput("inputText", "Cümleyi buraya giriniz"),
             actionButton("submit", "Gönder")
         ),
-
+        
         mainPanel(
             br(),
             p(strong("Sonuç")),
@@ -37,18 +35,30 @@ server <- function(input, output) {
         sentence_tokens <- input$inputText %>% tolower %>% word_tokenizer
         it_test <- itoken(sentence_tokens)
         dtm_test <- create_dtm(it_test, v_vectorizer)
-        res <- predict(fit, dtm_test, type="prob")
-        names(res) <- c("Öfke", "İğrenme", "Korku", "Mutlu", "Hüzün", "Şaşırma")
+        res <- predict(fit, dtm_test, type = "response")
+        dt <- as.data.table(res)
+        dt$V1 <- NULL
+        dt$V2 <-
+            c("Öfke",
+              "İğrenme",
+              "Korku",
+              "Mutlu",
+              "Hüzün",
+              "Şaşırma")
+        dt$V3 <- NULL
         output$result <- DT::renderDataTable({
-            t(res)
+            dt
         },
-        options = list(columns=list(list(title="Duygu"),
-                                    list(title="Olasılıklar"))))
+        options = list(columns = list(
+            list(title = ""),
+            list(title = "Duygu"),
+            list(title = "Olasılıklar")
+        )))
         output$sentiment <- renderPrint({
-            paste0("Metnin duygu durumu: ", names(which.max(res)))
+            paste0("Metnin duygu durumu: ", dt$V2[which.max(dt$value)])
         })
     })
 }
 
-# Run the application 
+# Run the application
 shinyApp(ui = ui, server = server)
