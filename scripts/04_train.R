@@ -9,7 +9,7 @@ fit <- cv.glmnet(
   type.measure = "class",
   nfolds = 5,
   thresh = 1e-3,
-  maxit = 1e3,
+  maxit = 1e4,
   parallel = TRUE
 )
 

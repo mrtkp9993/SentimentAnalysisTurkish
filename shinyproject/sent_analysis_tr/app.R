@@ -4,6 +4,7 @@ library(text2vec)
 library(dplyr)
 library(DT)
 library(glmnet)
+library(data.table)
 
 load(file = "fit.rda")
 load(file = "v_vectorizer.rda")

@@ -8,4 +8,4 @@ sentence_tokens <- sentence %>%
 it_test <- itoken(sentence_tokens)
 dtm_test <- create_dtm(it_test, v_vectorizer)
 
-predict(fit, dtm_test, type="response")
+predict(fit, dtm_test, s = "lambda.min", type="response")
